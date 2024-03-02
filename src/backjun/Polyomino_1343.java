@@ -4,67 +4,57 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Polyomino_1343 {
-    public static int visited;
+    //public static int visited;
 
     public static void main(String[] args) {
-        Polyomino_1343 polyomino1343 = new Polyomino_1343();
 
         Scanner sc =new Scanner(System.in);
         String bord= sc.next();
-
-        char[] charArr = bord.toCharArray();
-        boolean[] check = new boolean[charArr.length];
-
-
+        String answer="";
+        char[] charArr = bord.toCharArray(); //입력받은 배열
+        ArrayList<Integer> xCount = new ArrayList<>();//x카운트 담은 배열
+        int xCountNum=0; //x카운트
         for(int i =0; i<charArr.length; i++){
+
             if(charArr[i]=='X'){
-                check[i]=true;
-            }
-        }
-        int count=0;
-        ArrayList<String> answer = new ArrayList<String>();
-
-        for(int i =polyomino1343.visited; i<charArr.length; i++) {
-            count =polyomino1343.TFCheck(count, i, check);
-            System.out.println("count="+count);
-            if(!check[i]){
-                count=0;
-                answer.add(".");
+                xCountNum++;
             }else{
-                System.out.println("main i="+i);
-                if(count%2!=0){
-                    //answer.clear();
-                    answer.add("-1");
-                    break;
+                if(xCountNum!=0){
+                    xCount.add(xCountNum);
                 }
-                if(count==2){
-                    answer.add("BB");
-                } else if (count==4) {
-                    answer.add("AAAA");
+                xCount.add(0);
+                xCountNum=0; //초기화
+            }
+
+            if(i==charArr.length-1){
+                if(xCountNum!=0){
+                    xCount.add(xCountNum);
+                    xCountNum=0; //초기화
                 }
             }
-
-
         }
-        for(String i: answer){
-            System.out.println(i);
-        }
-
-
-    }
-    public int TFCheck(int count, int i, boolean[] check){
-        System.out.println(check.length);
-        for(int j=i; j<check.length; j++) {
-            visited=j;
-            System.out.println("method j="+j);
-            if(!check[j]){
-                return count;
-            }else{
-                count++;
+        for(int i=0; i<xCount.size(); i++){
+            if(xCount.get(i)%2!=0){ //X의 수가 홀수라면
+                answer ="-1";
+                break;
+            }else if(xCount.get(i)%4==0){
+                for(int j=0; j<xCount.get(i)/4; j++){
+                    answer+="AAAA";
+                }
+            }else if(xCount.get(i)>4){
+                for(int j=0; j<xCount.get(i)/4; j++){
+                    answer+="AAAA";
+                }
+                answer+="BB";
+            }else if(xCount.get(i)%2==0){
+                answer+="BB";
             }
-        }
+            if(xCount.get(i)==0){
+                answer+=".";
+            }
 
-        return count;
+        }
+        System.out.println(answer);
 
     }
 }
